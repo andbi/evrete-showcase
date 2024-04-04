@@ -6,7 +6,6 @@ import org.evrete.guides.showcase.Message;
 import org.evrete.guides.showcase.MessageWriter;
 import org.evrete.guides.showcase.ShowcaseUtils;
 import org.evrete.guides.showcase.trade.dto.*;
-import org.evrete.runtime.RuleDescriptor;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;

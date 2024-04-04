@@ -2,7 +2,7 @@ package org.evrete.guides.showcase.town.dto;
 
 import org.evrete.api.Type;
 import org.evrete.api.TypeField;
-import org.evrete.api.TypeWrapper;
+import org.evrete.util.TypeWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
