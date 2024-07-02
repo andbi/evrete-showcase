@@ -1,10 +1,13 @@
 package org.evrete.guides.showcase.town.rules;
 
 import org.evrete.api.RhsContext;
+import org.evrete.api.events.EnvironmentChangeEvent;
 import org.evrete.dsl.annotation.*;
 import org.evrete.guides.showcase.town.dto.Entity;
 import org.evrete.guides.showcase.town.dto.LocationType;
 import org.evrete.guides.showcase.town.dto.WorldTime;
+
+import java.util.function.Consumer;
 
 /**
  * <p>
@@ -21,10 +24,12 @@ import org.evrete.guides.showcase.town.dto.WorldTime;
 public class TravelUtils extends Commons {
     private double speed = 0.3;
 
-    @EnvironmentListener("commute-speed")
-    public void setSpeed(double speed) {
-        this.speed = speed;
-        LOGGER.fine("Commute speed set to: " + this.speed);
+    @EventSubscription
+    public void setSpeed(EnvironmentChangeEvent event) {
+        event.applyOnMatch("commute-speed", (Consumer<Double>) value -> {
+            TravelUtils.this.speed = value;
+            LOGGER.fine("Commute speed set to: " + value);
+        });
     }
 
     /**

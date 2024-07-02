@@ -3,7 +3,6 @@ package org.evrete.guides.showcase.town;
 import org.evrete.KnowledgeService;
 import org.evrete.api.Knowledge;
 import org.evrete.api.Type;
-import org.evrete.api.TypeResolver;
 import org.evrete.guides.showcase.AbstractWebsocketHandler;
 import org.evrete.guides.showcase.MessageWriter;
 import org.evrete.guides.showcase.ShowcaseUtils;
@@ -23,15 +22,16 @@ public class TownWebsocketHandler extends AbstractWebsocketHandler<TownWebsocket
     public TownWebsocketHandler() {
         try {
             KnowledgeService knowledgeService = new KnowledgeService();
-
-            TypeResolver resolver = knowledgeService.newTypeResolver();
-            Type<Entity> entityType = resolver.declare(Entity.class);
-            resolver.wrapType(new Entity.EntityKnowledgeType(entityType));
-
             this.geoData = ShowcaseUtils.fromJson(ShowcaseUtils.readResourceAsString("/META-INF/data/town/homes.json"), GeoData.class);
-            this.knowledge = knowledgeService.newKnowledge("JAVA-CLASS", resolver,
-                    MainRuleset.class, WorkingPeople.class, NonWorkingPeople.class, TravelUtils.class
-            );
+            this.knowledge = knowledgeService
+                    .newKnowledge()
+                    .configureTypes(typeResolver -> {
+                        Type<Entity> type = typeResolver.declare(Entity.class);
+                        typeResolver.addType(new Entity.EntityKnowledgeType(type));
+                    })
+                    .importRules("JAVA-CLASS", new Class<?>[]{
+                            MainRuleset.class, WorkingPeople.class, NonWorkingPeople.class, TravelUtils.class
+                    });
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

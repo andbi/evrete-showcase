@@ -13,13 +13,12 @@ import java.io.IOException;
 public class TradeWebsocketHandler extends AbstractWebsocketHandler<TradeWebsocketSession> {
     private final Knowledge knowledge;
     private final String jsonPriceHistory;
+
     public TradeWebsocketHandler() {
         try {
             KnowledgeService knowledgeService = new KnowledgeService();
             this.jsonPriceHistory = ShowcaseUtils.readResourceAsString("/META-INF/data/trade/stock-history.json");
-            this.knowledge = knowledgeService.newKnowledge(
-                    "JAVA-CLASS", EmaRuleset.class, TradingRuleset.class
-            );
+            this.knowledge = knowledgeService.newKnowledge().importRules("JAVA-CLASS", new Class<?>[]{EmaRuleset.class, TradingRuleset.class});
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

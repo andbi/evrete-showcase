@@ -1,27 +1,34 @@
 package org.evrete.guides.showcase.town.rules;
 
 import org.evrete.api.RhsContext;
+import org.evrete.api.events.EnvironmentChangeEvent;
 import org.evrete.dsl.annotation.*;
 import org.evrete.guides.showcase.town.RandomUtils;
 import org.evrete.guides.showcase.town.dto.Entity;
 import org.evrete.guides.showcase.town.dto.World;
 import org.evrete.guides.showcase.town.dto.WorldTime;
 
+import java.util.function.Consumer;
+
 @RuleSet
 public class MainRuleset extends Commons {
     private World world;
     private double shareOfWorkingPeople;
 
-    @EnvironmentListener("world")
-    public void initWorld(World world) {
-        this.world = world;
-        LOGGER.fine("World initialized");
+    @EventSubscription
+    public void initWorld(EnvironmentChangeEvent event) {
+        event.applyOnMatch("world", (Consumer<World>) world->{
+            this.world = world;
+            LOGGER.fine("World is set to: " + world);
+        });
     }
 
-    @EnvironmentListener("working-probability")
-    public void initWorkingProbability(double shareOfWorkingPeople) {
-        this.shareOfWorkingPeople = shareOfWorkingPeople;
-        LOGGER.fine("Share of working people is set to " + shareOfWorkingPeople);
+    @EventSubscription
+    public void initWorkingProbability(EnvironmentChangeEvent event) {
+        event.applyOnMatch("working-probability", (Consumer<Double>)  p->{
+            this.shareOfWorkingPeople = p;
+            LOGGER.fine("Share of working people is set to " + shareOfWorkingPeople);
+        });
     }
 
 

@@ -1,11 +1,14 @@
 package org.evrete.guides.showcase.town.rules;
 
 import org.evrete.api.RhsContext;
+import org.evrete.api.events.EnvironmentChangeEvent;
 import org.evrete.dsl.annotation.*;
 import org.evrete.guides.showcase.town.RandomUtils;
 import org.evrete.guides.showcase.town.dto.Entity;
 import org.evrete.guides.showcase.town.dto.World;
 import org.evrete.guides.showcase.town.dto.WorldTime;
+
+import java.util.function.Consumer;
 
 @RuleSet
 public class NonWorkingPeople extends Commons {
@@ -16,16 +19,21 @@ public class NonWorkingPeople extends Commons {
 
     private World world;
 
-    @EnvironmentListener("stay-home-probability")
-    public void initWorkingProbability(double p) {
-        this.stayHomeProbability = p;
-        LOGGER.fine("Leisure at home probability is set to: " + p);
+    @EventSubscription
+    public void initWorkingProbability(EnvironmentChangeEvent event) {
+        event.applyOnMatch("stay-home-probability", (Consumer<Double>) p->{
+            this.stayHomeProbability = p;
+            LOGGER.fine("Leisure at home probability is set to: " + p);
+        });
     }
 
 
-    @EnvironmentListener("world")
-    public void initWorld(World world) {
-        this.world = world;
+    @EventSubscription
+    public void initWorld(EnvironmentChangeEvent event) {
+        event.applyOnMatch("world", (Consumer<World>) world->{
+            this.world = world;
+            LOGGER.fine("World is set to: " + world);
+        });
     }
 
 
