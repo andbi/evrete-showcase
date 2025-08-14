@@ -5,19 +5,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
+		<version>3.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.evrete.guides</groupId>
 	<artifactId>showcase</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>showcase</name>
 	<description>Evrete Showcase Backend</description>
 	<properties>
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<evrete.version>4.0.0</evrete.version>
+		<evrete.version>4.0.3</evrete.version>
 	</properties>
 
 	<dependencies>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.10.1</version>
+			<version>2.13.1</version>
 		</dependency>
 
 		<dependency>
